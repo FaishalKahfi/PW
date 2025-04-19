@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interaksi DOM Lengkap</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+
+  <div class="container">
+    <h1 id="judul">Judul Awal</h1>
+    
+    <div class="input-group">
+      <input type="text" id="inputJudul" placeholder="Tulis judul baru..." />
+      <button class="btn" onclick="ubahTeks()"><i class="fas fa-edit"></i> Ubah Judul</button>
+    </div>
+
+    <p id="teks">Faishal Kahfi ( 202301110060 ) IP231</p>
+    <button class="btn" onclick="toggleTeks()"><i class="fas fa-eye"></i> Sembunyikan / Tampilkan</button>
+
+    <button class="btn" onclick="ubahWarna()"><i class="fas fa-palette"></i> Warna BackGround Acak</button>
+    
+    <div class="input-group">
+      <input type="text" id="inputParagraf" placeholder="Tulis paragraf baru..." />
+      <button class="btn" onclick="tambahParagraf()"><i class="fas fa-plus-circle"></i> Tambah Paragraf</button>
+    </div>
+
+    <div class="button-group">
+      <button class="btn" onclick="hitungKlik()"><i class="fas fa-mouse-pointer"></i> Klik Saya (<span id="jumlahKlik">0</span>)</button>
+      <button class="btn" onclick="toggleDarkMode()">Dark / Light Mode</button>
+    </div>
+    
+    <div class="button-group">
+      <button class="btn" onclick="simpanKeStorage()"><i class="fas fa-save"></i> Simpan Data</button>
+      <button class="btn red" onclick="resetHalaman()"><i class="fas fa-trash-alt"></i> Reset Halaman</button>
+    </div>
+
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="searchInput" placeholder="Cari paragraf..." oninput="cariParagraf()" />
+    </div>
+    
+    <div id="daftarParagraf" class="sortable"></div>
+  </div>
+
+  <script>
+    let counter = 0;
+    let darkMode = false;
+
+    function ubahTeks() {
+      const input = document.getElementById("inputJudul").value;
+      if (input.trim() !== "") {
+        document.getElementById("judul").innerText = input;
+        document.getElementById("inputJudul").value = "";
+        showToast("Judul berhasil diubah!");
+      }
+    }
+
+    function toggleTeks() {
+      const teks = document.getElementById("teks");
+      teks.style.display = teks.style.display === "none" ? "block" : "none";
+    }
+
+    function ubahWarna() {
+      const warnaAcak = "#" + Math.floor(Math.random() * 16777215).toString(16);
+      document.body.style.backgroundColor = warnaAcak;
+      showToast("Warna latar belakang diubah!");
+    }
+
+    function tambahParagraf() {
+      const input = document.getElementById("inputParagraf").value.trim();
+      if (input !== "") {
+        const id = Date.now().toString();
+        const data = { id, text: input };
+        buatParagraf(data);
+        simpanParagraf(data);
+        document.getElementById("inputParagraf").value = "";
+        showToast("Paragraf baru ditambahkan!");
+      }
+    }
+
+    function buatParagraf({ id, text }) {
+      const container = document.createElement("div");
+      container.className = "paragraf-container";
+      container.setAttribute("data-id", id);
+      container.draggable = true;
+
+      const p = document.createElement("p");
+      p.className = "dynamic-text";
+      p.innerText = text;
+
+      const inputEdit = document.createElement("input");
+      inputEdit.type = "text";
+      inputEdit.className = "input-edit";
+      inputEdit.value = text;
+      inputEdit.style.display = "none";
+
+      const btnContainer = document.createElement("div");
+      btnContainer.className = "button-container";
+
+      const btnEdit = document.createElement("button");
+      btnEdit.innerHTML = '<i class="fas fa-pen"></i> Edit';
+      btnEdit.className = "btn btn-small";
+      btnEdit.onclick = function () {
+        if (inputEdit.style.display === "none") {
+          inputEdit.style.display = "inline-block";
+          p.style.display = "none";
+          btnEdit.innerHTML = '<i class="fas fa-save"></i> Simpan';
+        } else {
+          const newText = inputEdit.value.trim();
+          if (newText) {
+            p.innerText = newText;
+            updateParagraf(id, newText);
+            showToast("Paragraf berhasil diperbarui!");
+          }
+          inputEdit.style.display = "none";
+          p.style.display = "block";
+          btnEdit.innerHTML = '<i class="fas fa-pen"></i> Edit';
+        }
+      };
+
+      const btnHapus = document.createElement("button");
+      btnHapus.innerHTML = '<i class="fas fa-trash-alt"></i> Hapus';
+      btnHapus.className = "btn btn-small red";
+      btnHapus.onclick = function () {
+        if (confirm("Apakah Anda yakin ingin menghapus paragraf ini?")) {
+          container.classList.add("fade-out");
+          setTimeout(() => {
+            container.remove();
+            hapusParagraf(id);
+            showToast("Paragraf berhasil dihapus!");
+          }, 300);
+        }
+      };
+
+      btnContainer.appendChild(btnEdit);
+      btnContainer.appendChild(btnHapus);
+
+      container.appendChild(p);
+      container.appendChild(inputEdit);
+      container.appendChild(btnContainer);
+
+      document.getElementById("daftarParagraf").appendChild(container);
+      
+      container.ondragstart = function (event) {
+        event.dataTransfer.setData("text", id);
+        this.classList.add("dragging");
+      };
+      
+      container.ondragend = function() {
+        this.classList.remove("dragging");
+      };
+      
+      container.ondragover = function (event) {
+        event.preventDefault();
+        this.classList.add("drag-over");
+      };
+      
+      container.ondragleave = function() {
+        this.classList.remove("drag-over");
+      };
+      
+      container.ondrop = function (event) {
+        event.preventDefault();
+        this.classList.remove("drag-over");
+        const draggedId = event.dataTransfer.getData("text");
+        const draggedContainer = document.querySelector(`[data-id="${draggedId}"]`);
+        if (draggedContainer !== container) {
+          container.parentNode.insertBefore(draggedContainer, container.nextSibling);
+          updateParagrafOrder();
+          showToast("Urutan paragraf diperbarui!");
+        }
+      };
+    }
+
+    function updateParagrafOrder() {
+      const containers = document.querySelectorAll('.paragraf-container');
+      const daftar = Array.from(containers).map(container => {
+        const id = container.getAttribute("data-id");
+        const text = container.querySelector('p').innerText;
+        return { id, text };
+      });
+      localStorage.setItem("paragrafList", JSON.stringify(daftar));
+    }
+
+    function simpanParagraf(data) {
+      let daftar = JSON.parse(localStorage.getItem("paragrafList")) || [];
+      daftar.push(data);
+      localStorage.setItem("paragrafList", JSON.stringify(daftar));
+    }
+
+    function updateParagraf(id, newText) {
+      let daftar = JSON.parse(localStorage.getItem("paragrafList")) || [];
+      daftar = daftar.map(p => p.id === id ? { ...p, text: newText } : p);
+      localStorage.setItem("paragrafList", JSON.stringify(daftar));
+    }
+
+    function hapusParagraf(id) {
+      let daftar = JSON.parse(localStorage.getItem("paragrafList")) || [];
+      daftar = daftar.filter(p => p.id !== id);
+      localStorage.setItem("paragrafList", JSON.stringify(daftar));
+    }
+
+    function loadParagraf() {
+      const daftar = JSON.parse(localStorage.getItem("paragrafList")) || [];
+      daftar.forEach(data => buatParagraf(data));
+    }
+
+    function cariParagraf() {
+      const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+      const paragrafContainers = document.querySelectorAll('.paragraf-container');
+      let found = false;
+      
+      paragrafContainers.forEach(container => {
+        const text = container.querySelector('p').innerText.toLowerCase();
+        if (text.includes(searchTerm)) {
+          container.style.display = 'block';
+          container.classList.add('highlight-search');
+          setTimeout(() => container.classList.remove('highlight-search'), 1500);
+          found = true;
+        } else {
+          container.style.display = 'none';
+        }
+      });
+      
+      if (searchTerm && !found) {
+        showToast("Tidak ada paragraf yang cocok dengan pencarian Anda", "warning");
+      }
+    }
+
+    function hitungKlik() {
+      counter++;
+      document.getElementById("jumlahKlik").innerText = counter;
+      
+      if (counter % 10 === 0) {
+        showToast(`Wow! Anda telah mengklik ${counter} kali!`, "success");
+      }
+    }
+
+    function toggleDarkMode() {
+      darkMode = !darkMode;
+      document.body.classList.toggle("dark");
+      showToast(darkMode ? "Dark mode diaktifkan" : "Light mode diaktifkan");
+    }
+
+    function simpanKeStorage() {
+      localStorage.setItem("judul", document.getElementById("judul").innerText);
+      localStorage.setItem("klik", counter);
+      showToast("Data berhasil disimpan ke localStorage!", "success");
+    }
+
+    function resetHalaman() {
+      document.body.style.backgroundColor = "var(--bg-light)";
+      document.getElementById("judul").innerText = "Judul Awal";
+      document.getElementById("inputJudul").value = "";
+      document.getElementById("inputParagraf").value = "";
+      document.getElementById("jumlahKlik").innerText = 0;
+      counter = 0;
+
+      document.getElementById("daftarParagraf").innerHTML = "";
+      document.getElementById("teks").style.display = "block";
+
+      if (document.body.classList.contains("dark")) {
+        document.body.classList.remove("dark");
+        darkMode = false;
+      }
+
+      localStorage.clear();
+      showToast("Halaman telah direset!", "warning");
+    }
+
+    function showToast(message, type = "info") {
+      // Create toast container if it doesn't exist
+      let toastContainer = document.querySelector('.toast-container');
+      if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.className = 'toast-container';
+        document.body.appendChild(toastContainer);
+      }
+      
+      // Create toast element
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      // Add icon based on type
+      let icon = 'info-circle';
+      if (type === 'success') icon = 'check-circle';
+      if (type === 'warning') icon = 'exclamation-triangle';
+      if (type === 'error') icon = 'times-circle';
+      
+      toast.innerHTML = `
+        <i class="fas fa-${icon}"></i>
+        <span>${message}</span>
+      `;
+      
+      toastContainer.appendChild(toast);
+      
+      // Show the toast with animation
+      setTimeout(() => toast.classList.add('show'), 10);
+      
+      // Auto-remove toast after 3 seconds
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    window.onload = function () {
+      const judul = localStorage.getItem("judul");
+      const klik = localStorage.getItem("klik");
+      if (judul) document.getElementById("judul").innerText = judul;
+      if (klik) {
+        counter = parseInt(klik);
+        document.getElementById("jumlahKlik").innerText = klik;
+      }
+
+      loadParagraf();
+      
+      // Add toast container
+      const toastContainer = document.createElement('div');
+      toastContainer.className = 'toast-container';
+      document.body.appendChild(toastContainer);
+      
+      // Welcome message
+      setTimeout(() => {
+        showToast("Selamat datang di aplikasi interaksi DOM!", "success");
+      }, 500);
+    }
+  </script>
+
+</body>
+</html>
