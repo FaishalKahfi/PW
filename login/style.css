@@ -6,100 +6,172 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
+  padding-top: 40px;
 }
 
 /* Container Box */
-.login-box {
-  background: #fff;
-  padding: 2.5rem 2rem;
-  border-radius: 16px;
-  box-shadow: 0 6px 24px 0 rgba(63, 120, 224, 0.13);
-  width: 100%;
-  max-width: 340px;
-  text-align: center;
-  animation: fadeIn 0.7s;
-  margin: 0 auto;
+.profile-container {
+  max-width: 800px;
+  width: 90%;
+  background: #ffffffcc;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.8s ease;
 }
 
 /* Animation */
 @keyframes fadeIn {
-  0% { transform: translateY(30px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-h2 {
+/* Profile Section */
+.profile-photo-wrapper {
+  text-align: center;
+  margin-top: -60px;
+}
+
+.profile-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.header-text {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.header-text h1 {
+  margin: 0.6rem 0 0.3rem;
+  font-size: 1.8rem;
+  color: #222;
+}
+
+.header-text p {
+  margin: 0.25rem;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.subtitle {
+  color: #11998e;
+  font-weight: bold;
+}
+
+/* Action Buttons */
+.action-buttons {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+button {
+  background: linear-gradient(to right, #11998e, #38ef7d);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin: 0.3rem;
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.04);
+  background: linear-gradient(to right, #38ef7d, #11998e);
+}
+
+/* Login Box */
+.login-box {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  max-width: 360px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.login-box h2 {
   margin-bottom: 1.2rem;
   color: #2575fc;
   letter-spacing: 1px;
 }
 
-/* Form Inputs */
 input[type="text"], input[type="password"] {
-  width: 90%;
-  padding: 0.7rem 0.8rem;
-  margin: 0.4rem 0 1.1rem 0;
-  border: 1.5px solid #a8a8a8;
+  width: 100%;
+  padding: 0.7rem;
+  margin-top: 0.4rem;
+  margin-bottom: 1.1rem;
+  border: 1.5px solid #ccc;
   border-radius: 8px;
   font-size: 1rem;
+  background-color: #f5f7fa;
   outline: none;
-  transition: border 0.2s;
-  background: #f7fafc;
+  transition: border-color 0.2s;
 }
 
 input[type="text"]:focus, input[type="password"]:focus {
-  border-color: #2575fc;
+  border-color: #11998e;
 }
 
-/* Labels */
 label {
-  display: block;
   text-align: left;
-  color: #535c68;
-  font-size: 0.98rem;
-  margin-bottom: 4px;
+  display: block;
+  font-size: 0.95rem;
+  color: #333;
+  margin-bottom: 0.2rem;
 }
 
-/* Buttons */
-button {
-  width: 100%;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
-  color: #fff;
-  font-size: 1.08rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
-  box-shadow: 0 3px 12px 0 rgba(56, 239, 125, 0.12);
-  margin-top: 10px;
+/* Data Card */
+.content-card {
+  background: #f9f9f9;
+  padding: 1.2rem 1.5rem;
+  margin-top: 1.5rem;
+  border-left: 5px solid #11998e;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
 }
 
-button:hover, button:active {
-  background: linear-gradient(90deg, #38ef7d 0%, #11998e 100%);
-  transform: translateY(-2px) scale(1.04);
+.content-card:hover {
+  transform: translateY(-2px);
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .login-box {
-    padding: 1.2rem 0.7rem;
-    max-width: 95vw;
-  }
-  h2 {
-    font-size: 1.2rem;
-  }
-  button {
-    font-size: 1rem;
-  }
-}
-
-/* Welcome text for home.html */
+/* Welcome Text */
 #welcome {
   color: #11998e;
   font-size: 1.35rem;
   margin-bottom: 2rem;
   letter-spacing: 0.5px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .profile-container {
+    padding: 1.2rem;
+  }
+
+  .header-text h1 {
+    font-size: 1.4rem;
+  }
+
+  .content-card {
+    padding: 1rem;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
 }
