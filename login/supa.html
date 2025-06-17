@@ -62,35 +62,44 @@
     const logoutBtn = document.getElementById('logoutBtn')
 
     async function loadData() {
-      const { data: { user } } = await supabase.auth.getUser()
+  const {
+    data: { user }
+  } = await supabase.auth.getUser()
 
-      if (!user) {
-        content.innerHTML = '<p>Silakan login untuk melihat data.</p>'
-        return
-      }
+  if (!user) {
+    content.innerHTML = '<p>Silakan login untuk melihat data.</p>'
+    return
+  }
 
-      const { data, error } = await supabase
-        .from('web3')
-        .select('*')
-        .order('id')
+  const { data, error } = await supabase
+    .from('web3')
+    .select('*')
+    .eq('user_id', user.id)  // ❗ hanya data user yang login
+    .order('id')
 
-      if (error) {
-        content.innerHTML = `<p>Error: ${error.message}</p>`
-        return
-      }
+  if (error) {
+    alert('Error loading data: ' + error.message)
+    return
+  }
 
-      let out = ''
-      data.forEach(row => {
-        out += `
-          <div class="content-card">
-            <h2>${row.judul}</h2>
-            <p>${row.isi}</p>
-          </div>
-        `
-      })
+  if (data.length === 0) {
+    content.innerHTML = '<p>Tidak ada data untuk akun ini.</p>'
+    return
+  }
 
-      content.innerHTML = out
-    }
+  let out = ''
+  data.forEach(row => {
+    out += `
+      <div class="content-card">
+        <h2>${row.judul}</h2>
+        <p>${row.isi}</p>
+      </div>
+    `
+  })
+
+  content.innerHTML = out
+}
+
 
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault()
