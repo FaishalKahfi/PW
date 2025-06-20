@@ -1,4 +1,4 @@
-/* Modern Profile Page Styles */
+/* Modern Profile Page Styles - FIXED VERSION */
 * {
   margin: 0;
   padding: 0;
@@ -193,7 +193,7 @@ body {
   box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
 }
 
-/* Content Cards */
+/* Content Cards - FIXED */
 .content-card {
   background: rgba(255,255,255,0.95);
   backdrop-filter: blur(20px);
@@ -242,10 +242,23 @@ body {
   font-weight: 600;
 }
 
+/* FIXED: Styling khusus untuk paragraph dalam content-card */
 .content-card p {
-  color: #666;
-  font-size: 1.1rem;
-  line-height: 1.8;
+  color: #666 !important;
+  font-size: 1.1rem !important;
+  line-height: 1.8 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  overflow: visible !important;
+  background: none !important;
+  text-align: left !important;
+  padding: 0 !important;
+  border: none !important;
+  backdrop-filter: none !important;
+  border-radius: 0 !important;
+  margin-bottom: 10px;
 }
 
 .content-card ul {
@@ -283,7 +296,7 @@ body {
   color: #667eea;
 }
 
-/* Content Area */
+/* Content Area - FIXED */
 #content {
   width: 100%;
   max-width: 700px;
@@ -292,7 +305,8 @@ body {
   gap: 20px;
 }
 
-#content p {
+/* Styling khusus untuk pesan empty state */
+#content > p:not(.content-card p) {
   text-align: center;
   color: white;
   font-size: 1.2rem;
