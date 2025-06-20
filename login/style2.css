@@ -1,0 +1,224 @@
+/* style2.css */
+
+/* Font Google: Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background: linear-gradient(120deg, #232526, #414345);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.profile-container {
+  max-width: 400px;
+  background: #fff;
+  margin: 40px auto;
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.18);
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 32px;
+}
+
+.header-bg {
+  height: 120px;
+  background: linear-gradient(90deg, #457fca 0%, #5691c8 100%);
+  border-bottom-left-radius: 80px 60px;
+  border-bottom-right-radius: 80px 60px;
+}
+
+.profile-photo-wrapper {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  top: 62px;
+}
+
+.profile-photo {
+  width: 112px;
+  height: 112px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  box-shadow: 0 4px 16px rgba(44, 62, 80, 0.22);
+  background: #eaeaea;
+}
+
+.header-text {
+  margin-top: 95px;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.header-text h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #2c3e50;
+  letter-spacing: 1px;
+}
+
+.header-text .subtitle {
+  font-size: 1rem;
+  color: #568cb7;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.header-text p {
+  color: #6b7681;
+  margin: 2px 0 0 0;
+  font-size: 0.99rem;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  margin: 14px 0 0 0;
+}
+
+.action-buttons button {
+  background: linear-gradient(90deg, #457fca 0%, #5691c8 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 8px 28px;
+  border: none;
+  border-radius: 24px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.14);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.16s;
+  outline: none;
+}
+
+.action-buttons button:hover {
+  background: linear-gradient(90deg, #568cb7 0%, #457fca 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.login-box {
+  margin: 22px 24px 0 24px;
+  background: #f9fafc;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(44, 62, 80, 0.10);
+  padding: 20px 16px 16px 16px;
+}
+
+.login-box h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+#loginForm label {
+  display: block;
+  margin-bottom: 12px;
+  color: #3a506b;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+#loginForm input {
+  width: 100%;
+  padding: 9px 13px;
+  border: 1.5px solid #dee3ea;
+  border-radius: 9px;
+  background: #f4f8fb;
+  margin-top: 6px;
+  font-size: 1rem;
+  margin-bottom: 6px;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+#loginForm input:focus {
+  border-color: #5691c8;
+  background: #fff;
+}
+
+#loginForm button[type="submit"] {
+  width: 100%;
+  background: linear-gradient(90deg, #457fca 0%, #5691c8 100%);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 16px;
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(86, 145, 200, 0.09);
+  transition: background 0.2s, transform 0.14s;
+}
+
+#loginForm button[type="submit"]:hover {
+  background: linear-gradient(90deg, #5691c8 0%, #457fca 100%);
+  transform: translateY(-1px) scale(1.02);
+}
+
+.content-card {
+  background: #f9fafc;
+  border-radius: 16px;
+  box-shadow: 0 1px 8px rgba(44, 62, 80, 0.08);
+  padding: 16px 18px 14px 18px;
+  margin: 20px auto 0 auto;
+  width: 92%;
+}
+
+.content-card h2,
+.content-card h3 {
+  margin: 0 0 10px 0;
+  color: #457fca;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.content-card p, .content-card ul {
+  margin: 0 0 2px 0;
+  color: #34495e;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.content-card ul {
+  padding-left: 18px;
+  margin-bottom: 0;
+}
+
+.content-card li {
+  margin-bottom: 7px;
+}
+
+#content p {
+  color: #6b7681;
+  text-align: center;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 480px) {
+  .profile-container {
+    max-width: 98vw;
+    padding-bottom: 16px;
+    border-radius: 0;
+  }
+
+  .content-card {
+    width: 97%;
+    padding: 13px 9px;
+  }
+
+  .login-box {
+    margin: 17px 3vw 0 3vw;
+    padding: 16px 7px 12px 7px;
+  }
+}
+
+::-webkit-input-placeholder { color: #b1b5ba; }
+::-moz-placeholder { color: #b1b5ba; }
+:-ms-input-placeholder { color: #b1b5ba; }
+::placeholder { color: #b1b5ba; }
